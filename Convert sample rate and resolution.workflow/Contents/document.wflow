@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>246</string>
+	<key>AMApplicationVersion</key>
+	<string>2.1</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0</string>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>Run AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>-- Stephen Norum-- stephen@mybunnyhug.org-- Path to sox program, or just "sox" if it is in your default search pathproperty sox : "sox"-- Rate and bit resolution choicesproperty choice_list_sample_rate : {"41.1", "48", "96", "192"}property arg_list_sample_rate : {"41.1k", "48k", "96k", "192k"}property name_list_sample_rate : {"41_1khz", "48khz", "96khz", "192khz"}property choice_list_bits_per_sample : {"16", "24", "Same as source"}property arg_list_bits_per_sample : {"-b 16", "-b 24", " "}property name_list_bits_per_sample : {"16bit", "24bit", "same"}on run {input, parameters}	-- get arguments for sox		set args to get_sox_args()		if args is false then		return input	end if		repeat with input_file in input		-- Build output file's name		set input_path to POSIX path of input_file		set name_parts to split_name(input_path)		set output_path to ¬			quoted form of (file_path of name_parts) &amp; "/" &amp; ¬			quoted form of (file_name of name_parts) &amp; "-" &amp; ¬			quoted form of (rate_name of args) &amp; "-" &amp; ¬			quoted form of (bits_name of args) &amp; "." &amp; ¬			quoted form of (file_ext of name_parts)				-- Convert the file		set command to ((quoted form of sox) &amp; " " &amp; ¬			(quoted form of input_path) &amp; " " &amp; ¬			(bits_arg of args) &amp; " " &amp; ¬			output_path &amp; ¬			" rate -v -I " &amp; ¬			(quoted form of (rate_arg of args)))				do shell script command	end repeat		return inputend runon get_sox_args()	-- Return requested sample rate and bit resolution	-- Get the sample rate	choose from list choice_list_sample_rate with prompt "Choose sample rate (in kHz):" default items {"192"}	set choice to result as string	set choice_index to index_of_item_in_list(choice, choice_list_sample_rate)		try		set arg_sample_rate to (item choice_index of arg_list_sample_rate)		set name_sample_rate to (item choice_index of name_list_sample_rate)	on error		return false	end try		-- Get number of bits per sample	choose from list choice_list_bits_per_sample with prompt "Choose number of bits per sample:" default items {"Same as source"}	set choice to result as string	set choice_index to index_of_item_in_list(choice, choice_list_bits_per_sample)		try		set arg_bits_per_sample to (item choice_index of arg_list_bits_per_sample)		set name_bits_per_sample to (item choice_index of name_list_bits_per_sample)	on error		return false	end try		return {rate_arg:arg_sample_rate, bits_arg:arg_bits_per_sample, rate_name:name_sample_rate, bits_name:name_bits_per_sample}end get_sox_argson index_of_item_in_list(the_item, the_list)	-- return index of item in list or false if item is not found	repeat with i from 1 to (count of the_list)		if (item i of the_list) is equal to (the_item) then			return i		end if	end repeat		return falseend index_of_item_in_liston split_name(file_name_path)	-- split up a file path into the path, filename without extension, and the extension	set the_path to do shell script ("dirname " &amp; quoted form of file_name_path)	set the_basename to do shell script ("basename " &amp; quoted form of file_name_path)	set the_file_name to do shell script ("F=" &amp; quoted form of the_basename &amp; "; echo ${F%.*}")	set the_extension to do shell script ("F=" &amp; quoted form of the_basename &amp; "; echo ${F#*.}")		return {file_path:the_path, file_name:the_file_name, file_ext:the_extension}end split_name</string>
+				</dict>
+				<key>Application</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>3EB3C2EE-2BB3-415F-8737-A9886FC916E7</string>
+				<key>Keywords</key>
+				<array>
+					<string>Run</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>1447506F-874A-43B9-834A-ED93455D7F5D</string>
+				<key>UUID</key>
+				<string>BA0B0CAD-29C1-4778-BBC2-2540B884B068</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>430.500000:873.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/English.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>state</key>
+	<dict>
+		<key>AMLogTabViewSelectedIndex</key>
+		<integer>0</integer>
+		<key>libraryState</key>
+		<dict>
+			<key>actionsMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 381.000000, 812.000000, NO</string>
+					<string>0.000000, 813.000000, 381.000000, 239.000000, NO</string>
+				</array>
+			</dict>
+			<key>actionsMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 812.000000, NO</string>
+					<string>164.000000, 0.000000, 217.000000, 812.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 350.000000, 555.000000, NO</string>
+					<string>0.000000, 556.000000, 350.000000, 148.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 555.000000, NO</string>
+					<string>164.000000, 0.000000, 186.000000, 555.000000, NO</string>
+				</array>
+			</dict>
+		</dict>
+		<key>majorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>0.0</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 381.000000, 1097.000000, NO</string>
+				<string>382.000000, 0.000000, 861.000000, 1097.000000, NO</string>
+			</array>
+		</dict>
+		<key>minorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>150</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 861.000000, 928.000000, NO</string>
+				<string>0.000000, 938.000000, 861.000000, 140.000000, NO</string>
+			</array>
+		</dict>
+		<key>windowFrame</key>
+		<string>{{434, 4}, {1242, 1174}}</string>
+		<key>workflowViewScrollPosition</key>
+		<string>{{0, 0}, {861, 928}}</string>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject.music</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>
