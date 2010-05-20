@@ -14,8 +14,8 @@ Installation
     $ sudo cp "path/to/sox" "/usr/bin/"
 
 4. Double-click "Convert sample rate and resolution.workflow" to open the workflow with Automator.app
-5. In the Automator's *File* menu, choose *Save As*
-6. Hit return when prompted for a name
+5. In Automator's *File* menu, choose *Save As*
+6. Click *Save* when prompted for a name
 
 
 Usage
