@@ -33,9 +33,9 @@ Installing the Convert Audio Service Workflow
 
         property sox : "/Applications/sox-14.3.0/sox"
 
-4. In the *File* menu, select *Save as Plug-in* with *Plug-in for Finder*
+3. In the *File* menu, select *Save as Plug-in* with *Plug-in for Finder*
 
-5. Name the plug-in "Convert Audio" (or whatever else you want to use)
+4. Name the plug-in "Convert Audio" (or whatever else you want to use)
 
 
 Usage
